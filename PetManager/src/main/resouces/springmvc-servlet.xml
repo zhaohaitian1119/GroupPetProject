@@ -50,7 +50,7 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-    <mvc:resources mapping="/static/**" location="/static/"></mvc:resources>
+    <mvc:resources  location="/static/" mapping="/static/**"></mvc:resources>
     <context:component-scan base-package="com.grounp.pet.controller"></context:component-scan>
 
 
