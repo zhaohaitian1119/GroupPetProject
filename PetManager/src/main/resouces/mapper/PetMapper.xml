@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grounp.pet.mapper.PetMapper" >
+  <resultMap id="BaseResultMap" type="com.grounp.pet.pojo.Pet" >
+    <id column="pet_id" property="petId" jdbcType="INTEGER" />
+    <result column="pet_name" property="petName" jdbcType="VARCHAR" />
+    <result column="pet_breed" property="petBreed" jdbcType="VARCHAR" />
+    <result column="pet_sex" property="petSex" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pet_id, pet_name, pet_breed, pet_sex, birthday, description
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.grounp.pet.pojo.PetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pet
+    where pet_id = #{petId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pet
+    where pet_id = #{petId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.grounp.pet.pojo.PetExample" >
+    delete from pet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.grounp.pet.pojo.Pet" >
+    insert into pet (pet_id, pet_name, pet_breed, 
+      pet_sex, birthday, description
+      )
+    values (#{petId,jdbcType=INTEGER}, #{petName,jdbcType=VARCHAR}, #{petBreed,jdbcType=VARCHAR}, 
+      #{petSex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.grounp.pet.pojo.Pet" >
+    insert into pet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="petId != null" >
+        pet_id,
+      </if>
+      <if test="petName != null" >
+        pet_name,
+      </if>
+      <if test="petBreed != null" >
+        pet_breed,
+      </if>
+      <if test="petSex != null" >
+        pet_sex,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="petId != null" >
+        #{petId,jdbcType=INTEGER},
+      </if>
+      <if test="petName != null" >
+        #{petName,jdbcType=VARCHAR},
+      </if>
+      <if test="petBreed != null" >
+        #{petBreed,jdbcType=VARCHAR},
+      </if>
+      <if test="petSex != null" >
+        #{petSex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.grounp.pet.pojo.PetExample" resultType="java.lang.Integer" >
+    select count(*) from pet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update pet
+    <set >
+      <if test="record.petId != null" >
+        pet_id = #{record.petId,jdbcType=INTEGER},
+      </if>
+      <if test="record.petName != null" >
+        pet_name = #{record.petName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.petBreed != null" >
+        pet_breed = #{record.petBreed,jdbcType=VARCHAR},
+      </if>
+      <if test="record.petSex != null" >
+        pet_sex = #{record.petSex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update pet
+    set pet_id = #{record.petId,jdbcType=INTEGER},
+      pet_name = #{record.petName,jdbcType=VARCHAR},
+      pet_breed = #{record.petBreed,jdbcType=VARCHAR},
+      pet_sex = #{record.petSex,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      description = #{record.description,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.grounp.pet.pojo.Pet" >
+    update pet
+    <set >
+      <if test="petName != null" >
+        pet_name = #{petName,jdbcType=VARCHAR},
+      </if>
+      <if test="petBreed != null" >
+        pet_breed = #{petBreed,jdbcType=VARCHAR},
+      </if>
+      <if test="petSex != null" >
+        pet_sex = #{petSex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pet_id = #{petId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.grounp.pet.pojo.Pet" >
+    update pet
+    set pet_name = #{petName,jdbcType=VARCHAR},
+      pet_breed = #{petBreed,jdbcType=VARCHAR},
+      pet_sex = #{petSex,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      description = #{description,jdbcType=VARCHAR}
+    where pet_id = #{petId,jdbcType=INTEGER}
+  </update>
+</mapper>
