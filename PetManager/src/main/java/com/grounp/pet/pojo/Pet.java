@@ -15,6 +15,16 @@ public class Pet {
 
     private String description;
 
+    private String datetime;
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
     public Integer getPetId() {
         return petId;
     }
